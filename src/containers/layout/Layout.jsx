@@ -28,9 +28,6 @@ const AppLayout = ({ children }) => {
 export default AppLayout;
 
 const ContentWrapper = styled.div`
-   display: flex;
-   height: 100vh;
-
    @media screen and (max-width: 600px) {
       display: block;
       height: auto;
@@ -40,10 +37,4 @@ const ContentWrapper = styled.div`
 const MainContent = styled.div`
    width: 100%;
    height: 100%;
-   padding: 9.5rem 7rem;
-   overflow-y: auto;
-
-   @media screen and (max-width: 600px) {
-      padding: 2rem;
-   }
 `;

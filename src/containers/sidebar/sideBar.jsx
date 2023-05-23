@@ -40,6 +40,8 @@ const SidemenuWrapper = styled.div`
    background: ${({ theme }) => theme.colors?.white};
    height: 100vh;
    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+   position: fixed;
+   z-index: 1;
 
    h1 {
       display: inline-block;
@@ -53,6 +55,7 @@ const SidemenuWrapper = styled.div`
    @media screen and (max-width: 600px) {
       width: 100%;
       text-align: center;
+      position: relative;
       height: auto;
       box-shadow: none;
 

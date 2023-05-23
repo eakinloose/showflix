@@ -89,7 +89,14 @@ const FlexWrapper = styled.div`
       width: 300px;
       margin-right: 4rem;
       object-fit: cover;
-      border-radius: 20px;
+      border-radius: 10px;
+   }
+
+   @media screen and (max-width: 600px) {
+      flex-direction: column;
+      img {
+         margin: 2rem 0;
+      }
    }
 `;
 
@@ -108,14 +115,16 @@ const ContentWrapper = styled.div`
 
    .flex {
       display: flex;
+      flex-wrap: wrap;
 
       div {
          display: flex;
          align-items: center;
-         margin-right: 4rem;
+         margin-right: 3rem;
 
          span {
-            margin-left: 1rem;
+            margin-left: 0.6rem;
+            line-height: 2.5;
          }
       }
    }
@@ -131,6 +140,11 @@ const ContentWrapper = styled.div`
       padding: 1.4rem;
       border-radius: 15px;
       color: ${({ theme }) => theme.colors?.primary};
+   }
+
+   @media screen and (max-width: 600px) {
+      margin-top: 3rem;
+      min-height: 370px;
    }
 `;
 
