@@ -12,7 +12,7 @@ export const fetchMovies = createAsyncThunk(
    async (searchparam) => {
       try {
          const response = await axios.get(
-            `http://www.omdbapi.com/?s=${searchparam}&apikey=88841216`
+            `https://www.omdbapi.com/?s=${searchparam}&apikey=88841216`
          );
          console.log(response.data);
          return response.data.Search;

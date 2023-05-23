@@ -1,6 +1,6 @@
 import { ThemeProvider, styled } from "styled-components";
 import GlobalStyles from "../../globalstyles";
-import Sidebar from "../sidebar/sideBar";
+import Sidebar from "../Sidebar/SideBar";
 
 // eslint-disable-next-line react/prop-types
 const AppLayout = ({ children }) => {
