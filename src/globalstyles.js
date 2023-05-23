@@ -8,7 +8,7 @@ const GlobalStyles = createGlobalStyle`
   }
 
   html{
-    font-family: 'ubuntu', sans-serif;
+    font-family: 'poppins', sans-serif;
     overflow-x: hidden;
     font-size: 63.5%;
   }
