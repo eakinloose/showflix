@@ -33,6 +33,10 @@ const GlobalStyles = createGlobalStyle`
      color: ${({ theme }) => theme.colors?.black};
     }
 
+    a{
+      cursor: pointer;
+    }
+
    button{
     border: none;
     border-radius: 5px;

@@ -14,7 +14,7 @@ const Movie = () => {
 
       const getData = () => {
          axios
-            .get(`http://www.omdbapi.com/?i=${id}&apikey=94e64b67`, {
+            .get(`http://www.omdbapi.com/?i=${id}&apikey=88841216`, {
                cancelToken: cancelToken.token,
             })
             .then((response) => {
@@ -37,7 +37,7 @@ const Movie = () => {
       };
    }, [id]);
 
-   const { Title, Plot, Released, imdbRating } = movieData;
+   const { Title, Plot, Released, imdbRating, Runtime } = movieData;
 
    return (
       <MovieWrapper>
@@ -57,7 +57,7 @@ const Movie = () => {
                   </div>
                   <div>
                      <FiPlay />
-                     <span>{Released}</span>
+                     <span>{Runtime}</span>
                   </div>
                </div>
                <div>
@@ -69,7 +69,7 @@ const Movie = () => {
             </ContentWrapper>
          </FlexWrapper>
          <RelatedMovies>
-            Deserunt cillum velit pariatur incididunt do.
+            <h3>Similar Movies</h3>
          </RelatedMovies>
       </MovieWrapper>
    );
@@ -78,7 +78,14 @@ const Movie = () => {
 export default Movie;
 
 const MovieWrapper = styled.div`
+   padding: 9.5rem 5rem;
    width: 100%;
+   margin-left: 300px;
+
+   @media screen and (max-width: 600px) {
+      margin: 0;
+      padding: 2rem;
+   }
 `;
 
 const FlexWrapper = styled.div`
@@ -96,6 +103,7 @@ const FlexWrapper = styled.div`
       flex-direction: column;
       img {
          margin: 2rem 0;
+         width: 100%;
       }
    }
 `;

@@ -1,5 +1,12 @@
+import { styled } from "styled-components";
+
 const WishList = () => {
-   return <>WishList</>;
+   return <WishlistWrapper>WishList</WishlistWrapper>;
 };
 
 export default WishList;
+
+const WishlistWrapper = styled.div`
+   padding: 9.5rem 5rem;
+   margin-left: 300px;
+`;
