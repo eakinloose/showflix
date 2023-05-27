@@ -3,8 +3,10 @@ import axios from "axios";
 
 const initialState = {
    loading: false,
+   loadingSingleMovie: false,
    movies: [],
    error: "",
+   movie: {},
 };
 
 export const fetchMovies = createAsyncThunk(
@@ -14,8 +16,23 @@ export const fetchMovies = createAsyncThunk(
          const response = await axios.get(
             `https://www.omdbapi.com/?s=${searchparam}&apikey=88841216`
          );
-         console.log(response.data);
+         console.log(response.data.Search);
          return response.data.Search;
+      } catch (err) {
+         return err.Error;
+      }
+   }
+);
+
+export const fetchMovieById = createAsyncThunk(
+   "movie/fetchById",
+   async (id) => {
+      try {
+         const response = await axios.get(
+            `https://www.omdbapi.com/?i=${id}&apikey=88841216`
+         );
+         console.log(response.data);
+         return response.data;
       } catch (err) {
          return err.Error;
       }
@@ -25,7 +42,12 @@ export const fetchMovies = createAsyncThunk(
 const moviesSlice = createSlice({
    name: "movies",
    initialState: initialState,
-   reducers: {},
+   reducers: {
+      clearMovie: (state) => {
+         state.movie = {};
+         state.error = "";
+      },
+   },
    extraReducers: (builder) => {
       builder.addCase(fetchMovies.pending, (state) => {
          state.loading = true;
@@ -40,7 +62,21 @@ const moviesSlice = createSlice({
          state.movies = [];
          state.error = action.payload;
       });
+      builder.addCase(fetchMovieById.pending, (state) => {
+         state.loadingSingleMovie = true;
+      });
+      builder.addCase(fetchMovieById.fulfilled, (state, action) => {
+         state.loadingSingleMovie = false;
+         state.movie = action.payload;
+         state.error = "";
+      });
+      builder.addCase(fetchMovieById.rejected, (state, action) => {
+         state.loadingSingleMovie = false;
+         state.movie = {};
+         state.error = action.payload;
+      });
    },
 });
 
+export const { clearMovie } = moviesSlice.actions;
 export default moviesSlice.reducer;

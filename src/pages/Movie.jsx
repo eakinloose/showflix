@@ -1,46 +1,50 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import { FiClock, FiHeart, FiPlay, FiStar } from "react-icons/fi";
 import { styled } from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { clearMovie, fetchMovieById } from "../features/movies";
+import Overlay from "../components/overlay";
+import { GridWrapper } from "../globalstyles";
 
 const Movie = () => {
+   const moviesState = useSelector((state) => state.movies);
+   const dispatch = useDispatch();
    const { id } = useParams();
 
-   const [movieData, setMovieData] = useState({});
+   const singleMovie = moviesState.movie;
+   const moviesList = moviesState.movies;
+   const relatedMovies = moviesList.filter(
+      (movie) =>
+         movie.Year === singleMovie.Year && movie.Title !== singleMovie.Title
+   );
+
+   const [movieData, setMovieData] = useState(singleMovie);
+   const [overlay, setOverlay] = useState(false);
 
    useEffect(() => {
-      const cancelToken = axios.CancelToken.source();
+      if (Object.keys(movieData).length === 0) {
+         dispatch(fetchMovieById(id)).then((data) => {
+            setMovieData(data.payload);
+         });
+      }
+   }, [dispatch, id, movieData]);
 
-      const getData = () => {
-         axios
-            .get(`https://www.omdbapi.com/?i=${id}&apikey=88841216`, {
-               cancelToken: cancelToken.token,
-            })
-            .then((response) => {
-               setMovieData(response.data);
-               console.log(response.data);
-            })
-            .catch((error) => {
-               if (axios.isCancel(error)) {
-                  return;
-               } else {
-                  console.log(error.message);
-               }
-            });
-      };
+   const openModal = (id) => {
+      dispatch(fetchMovieById(id));
+      setOverlay(true);
+   };
 
-      getData();
-
-      return () => {
-         cancelToken.cancel();
-      };
-   }, [id]);
+   const closeModal = () => {
+      setOverlay(false);
+      dispatch(clearMovie());
+   };
 
    const { Title, Plot, Released, imdbRating, Runtime } = movieData;
 
    return (
       <MovieWrapper>
+         {overlay && <Overlay closeModal={closeModal} />}
          <FlexWrapper>
             <img src={movieData.Poster} alt={movieData.Title} />
             <ContentWrapper>
@@ -70,6 +74,18 @@ const Movie = () => {
          </FlexWrapper>
          <RelatedMovies>
             <h3>Similar Movies</h3>
+            <GridWrapper>
+               {relatedMovies.map((movie, index) => (
+                  <div
+                     key={index}
+                     className="movieCard"
+                     onClick={() => openModal(movie.imdbID)}
+                  >
+                     <img src={movie.Poster} alt={movie.Title} />
+                     <button>view</button>
+                  </div>
+               ))}
+            </GridWrapper>
          </RelatedMovies>
       </MovieWrapper>
    );
@@ -78,7 +94,6 @@ const Movie = () => {
 export default Movie;
 
 //style
-
 
 const MovieWrapper = styled.div`
    padding: 9.5rem 5rem;
@@ -160,7 +175,5 @@ const ContentWrapper = styled.div`
 `;
 
 const RelatedMovies = styled.div`
-   display: grid;
-   grid-template-columns: repeat(4, 1fr);
-   margin-top: 8rem;
+   margin: 8rem 0 4rem;
 `;
