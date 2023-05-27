@@ -75,18 +75,22 @@ const Movie = () => {
          </FlexWrapper>
          <RelatedMovies>
             <h3>Similar Movies</h3>
-            <GridWrapper>
-               {relatedMovies.map((movie, index) => (
-                  <div
-                     key={index}
-                     className="movieCard"
-                     onClick={() => openModal(movie.imdbID)}
-                  >
-                     <img src={movie.Poster} alt={movie.Title} />
-                     <button>view</button>
-                  </div>
-               ))}
-            </GridWrapper>
+            {relatedMovies.length ? (
+               <GridWrapper>
+                  {relatedMovies.map((movie, index) => (
+                     <div
+                        key={index}
+                        className="movieCard"
+                        onClick={() => openModal(movie.imdbID)}
+                     >
+                        <img src={movie.Poster} alt={movie.Title} />
+                        <button>view</button>
+                     </div>
+                  ))}
+               </GridWrapper>
+            ) : (
+               <h5 id="no_movie">No movie relates to this movie by year</h5>
+            )}
          </RelatedMovies>
       </MovieWrapper>
    );

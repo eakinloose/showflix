@@ -46,6 +46,11 @@ const GlobalStyles = createGlobalStyle`
     cursor: pointer;
     font-size: 1.4rem;
   }
+
+  #no_movie{
+   margin-top: 4rem;
+   font-size: 1.6rem;
+  }
 `;
 
 export const GridWrapper = styled.div`
