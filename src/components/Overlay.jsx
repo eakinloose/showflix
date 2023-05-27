@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { keyframes, styled } from "styled-components";
 
-const Overlay = ({ closeModal }) => {
+const MovieOverlay = ({ closeModal }) => {
    const moviesState = useSelector((state) => state.movies);
    const singleMovie = moviesState.movie;
 
@@ -23,7 +23,7 @@ const Overlay = ({ closeModal }) => {
    );
 };
 
-export default Overlay;
+export default MovieOverlay;
 
 const slideInAnimation = keyframes`
    from {

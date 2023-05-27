@@ -4,8 +4,9 @@ import { FiClock, FiHeart, FiPlay, FiStar } from "react-icons/fi";
 import { styled } from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { clearMovie, fetchMovieById } from "../features/movies";
-import Overlay from "../components/overlay";
+
 import { GridWrapper } from "../globalstyles";
+import MovieOverlay from "../components/Overlay";
 
 const Movie = () => {
    const moviesState = useSelector((state) => state.movies);
@@ -44,7 +45,7 @@ const Movie = () => {
 
    return (
       <MovieWrapper>
-         {overlay && <Overlay closeModal={closeModal} />}
+         {overlay && <MovieOverlay closeModal={closeModal} />}
          <FlexWrapper>
             <img src={movieData.Poster} alt={movieData.Title} />
             <ContentWrapper>

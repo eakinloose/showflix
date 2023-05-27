@@ -3,8 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { FiSearch } from "react-icons/fi";
 import { styled } from "styled-components";
 import { clearMovie, fetchMovieById, fetchMovies } from "../features/movies";
-import Overlay from "../components/overlay";
+
 import { GridWrapper } from "../globalstyles";
+import MovieOverlay from "../components/Overlay";
 
 const Home = () => {
    const moviesState = useSelector((state) => state.movies);
@@ -31,7 +32,7 @@ const Home = () => {
 
    return (
       <HomeWrapper>
-         {overlay && <Overlay closeModal={closeModal} />}
+         {overlay && <MovieOverlay closeModal={closeModal} />}
          <SearchWrapper>
             <h2>Explore</h2>
             <div className="searchArea">
