@@ -16,7 +16,6 @@ export const fetchMovies = createAsyncThunk(
          const response = await axios.get(
             `https://www.omdbapi.com/?s=${searchparam}&apikey=88841216`
          );
-         console.log(response.data.Search);
          return response.data.Search;
       } catch (err) {
          return err.Error;
@@ -31,7 +30,6 @@ export const fetchMovieById = createAsyncThunk(
          const response = await axios.get(
             `https://www.omdbapi.com/?i=${id}&apikey=88841216`
          );
-         console.log(response.data);
          return response.data;
       } catch (err) {
          return err.Error;
@@ -44,7 +42,7 @@ const moviesSlice = createSlice({
    initialState: initialState,
    reducers: {
       clearMovie: (state) => {
-         state.movie = {};
+         state.movies = [];
          state.error = "";
       },
    },

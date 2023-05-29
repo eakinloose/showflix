@@ -1,17 +1,14 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useState } from "react";
+
 import { FiClock, FiHeart, FiPlay, FiStar } from "react-icons/fi";
 import { styled } from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { clearMovie, fetchMovieById } from "../features/movies";
-
-import { GridWrapper } from "../globalstyles";
+import { fetchMovieById } from "../features/movies";
 import MovieOverlay from "../components/Overlay";
 
 const Movie = () => {
    const moviesState = useSelector((state) => state.movies);
    const dispatch = useDispatch();
-   const { id } = useParams();
 
    const singleMovie = moviesState.movie;
    const moviesList = moviesState.movies;
@@ -20,16 +17,7 @@ const Movie = () => {
          movie.Year === singleMovie.Year && movie.Title !== singleMovie.Title
    );
 
-   const [movieData, setMovieData] = useState(singleMovie);
    const [overlay, setOverlay] = useState(false);
-
-   useEffect(() => {
-      if (Object.keys(movieData).length === 0) {
-         dispatch(fetchMovieById(id)).then((data) => {
-            setMovieData(data.payload);
-         });
-      }
-   }, [dispatch, id, movieData]);
 
    const openModal = (id) => {
       dispatch(fetchMovieById(id));
@@ -38,61 +26,62 @@ const Movie = () => {
 
    const closeModal = () => {
       setOverlay(false);
-      dispatch(clearMovie());
    };
 
-   const { Title, Plot, Released, imdbRating, Runtime } = movieData;
+   const { Title, Plot, Released, imdbRating, Runtime, Poster } = singleMovie;
 
    return (
-      <MovieWrapper>
+      <>
          {overlay && <MovieOverlay closeModal={closeModal} />}
-         <FlexWrapper>
-            <img src={movieData.Poster} alt={movieData.Title} />
-            <ContentWrapper>
-               <h1>{Title}</h1>
-               <p>{Plot}</p>
-               <div className="flex">
-                  <div>
-                     <FiClock />
-                     <span>{Released}</span>
-                  </div>
-                  <div>
-                     <FiStar />
-                     <span>{imdbRating}</span>
-                  </div>
-                  <div>
-                     <FiPlay />
-                     <span>{Runtime}</span>
-                  </div>
-               </div>
-               <div>
-                  <button className="secondary">Watch Now</button>
-                  <button className="primary">
-                     <FiHeart />
-                  </button>
-               </div>
-            </ContentWrapper>
-         </FlexWrapper>
-         <RelatedMovies>
-            <h3>Similar Movies</h3>
-            {relatedMovies.length ? (
-               <GridWrapper>
-                  {relatedMovies.map((movie, index) => (
-                     <div
-                        key={index}
-                        className="movieCard"
-                        onClick={() => openModal(movie.imdbID)}
-                     >
-                        <img src={movie.Poster} alt={movie.Title} />
-                        <button>view</button>
+         <MovieWrapper>
+            <FlexWrapper>
+               <img src={Poster} alt={Title} />
+               <ContentWrapper>
+                  <h1>{Title}</h1>
+                  <p>{Plot}</p>
+                  <div className="flex">
+                     <div>
+                        <FiClock />
+                        <span>{Released}</span>
                      </div>
-                  ))}
-               </GridWrapper>
-            ) : (
-               <h5 id="no_movie">No movie relates to this movie by year</h5>
-            )}
-         </RelatedMovies>
-      </MovieWrapper>
+                     <div>
+                        <FiStar />
+                        <span>{imdbRating}</span>
+                     </div>
+                     <div>
+                        <FiPlay />
+                        <span>{Runtime}</span>
+                     </div>
+                  </div>
+                  <div>
+                     <button className="secondary">Watch Now</button>
+                     <button className="primary">
+                        <FiHeart />
+                     </button>
+                  </div>
+               </ContentWrapper>
+            </FlexWrapper>
+            <RelatedMovies>
+               <h3>Similar Movies</h3>
+               {relatedMovies.length ? (
+                  <GridWrapper>
+                     {relatedMovies.map((movie, index) => (
+                        <div
+                           key={index}
+                           className="movieCard"
+                           onClick={() => openModal(movie.imdbID)}
+                        >
+                           <img src={movie.Poster} alt={movie.Title} />
+                           <button>view</button>
+                        </div>
+                     ))}
+                  </GridWrapper>
+               ) : (
+                  <h5 id="no_movie">No movie relates to this movie by year</h5>
+               )}
+            </RelatedMovies>
+         </MovieWrapper>
+      </>
    );
 };
 
@@ -176,6 +165,48 @@ const ContentWrapper = styled.div`
    @media screen and (max-width: 600px) {
       margin-top: 3rem;
       min-height: 370px;
+   }
+`;
+
+export const GridWrapper = styled.div`
+   width: 80%;
+   display: grid;
+   grid-template-columns: repeat(3, 1fr);
+   gap: 4rem;
+
+   .movieCard {
+      position: relative;
+      height: 330px;
+      width: 230px;
+      cursor: pointer;
+
+      img {
+         width: 230px;
+         height: 100%;
+         object-fit: cover;
+         border-radius: 10px;
+      }
+
+      button {
+         position: absolute;
+         left: 50%;
+         bottom: 10%;
+         transform: translateX(-50%);
+      }
+   }
+
+   @media screen and (max-width: 600px) {
+      width: 100%;
+      grid-template-columns: repeat(1, 1fr);
+
+      .movieCard {
+         height: 429px;
+         width: 100%;
+
+         img {
+            width: 100%;
+         }
+      }
    }
 `;
 

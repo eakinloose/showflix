@@ -1,12 +1,23 @@
 /* eslint-disable react/prop-types */
 import { FiArrowLeft } from "react-icons/fi";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { keyframes, styled } from "styled-components";
 
 const MovieOverlay = ({ closeModal }) => {
    const moviesState = useSelector((state) => state.movies);
    const singleMovie = moviesState.movie;
+   const navigate = useNavigate();
+   let currentUrl = window.location.href;
+
+   const navigateToMovie = () => {
+      if (currentUrl.includes(singleMovie.imdbID)) {
+         closeModal();
+         return;
+      } else {
+         navigate(`/movie/${singleMovie.imdbID}`);
+      }
+   };
 
    return (
       <OverlayContainer onClick={closeModal}>
@@ -15,9 +26,7 @@ const MovieOverlay = ({ closeModal }) => {
             <img src={singleMovie.Poster} alt={singleMovie.Title} />
             <h3>{singleMovie.Title}</h3>
             <p>{singleMovie.Plot}</p>
-            <Link to={`movie/${singleMovie.imdbID}`}>
-               <button>watch</button>
-            </Link>
+            <button onClick={navigateToMovie}>Watch</button>
          </ContentWrapper>
       </OverlayContainer>
    );
